@@ -1,0 +1,51 @@
+<div class="mod_faq_accordion">
+	<ul class="tab_list">
+	<?php $lastkey = count($this->categories) -1; ?>
+	<?php	foreach ($this->categories as $categorykey => $category): ?>
+			<li data-tab-content="<?= $category->alias; ?>" class="tab_list_item <?php echo ((($categorykey % 2) == 0) ? ' odd' : ' even') . (($categorykey == 0) ? ' first' : '') . (($categorykey == $lastkey) ? ' last' : ''); ?>"><?= $category->category; ?></li>
+	<?php endforeach; ?>
+	</ul>
+	<div class="tab_content">
+	<?php	foreach ($this->categories as $categorykey => $category): ?>
+		<div data-content="<?= $category->alias; ?>" class="tab_content_item">
+		<?php if($this->items[$category->alias]): ?>
+		<div class="slider slider-<?= $categorykey ?>">
+			<?php $slidecount = count($this->items[$category->alias]); ?>
+			<div class="slider_content" data-slides="<?= $slidecount; ?>">
+			<?php foreach ($this->items[$category->alias] as $pagekey => $page): ?>
+				<div class="slide" data-slide="<?= $pagekey; ?>">
+					<?php foreach ($page as $itemkey => $item): ?>
+						<section class="ce_accordionStart ce_accordion block">
+							<div class="toggler"><span class="numbering"><span class="category_id"><?= $categorykey+1; ?></span>.<span class="item_id"></span><?= $itemkey+1; ?></span> <?= $item['headline']; ?></div>
+							<div class="accordion">
+								<div>
+									<div class="ce_text block"><?= $item['text']; ?></div>
+								</div>
+							</div>
+						</section>
+					<?php endforeach; ?>
+				</div>
+			<?php endforeach; ?>
+			</div>
+			<div class="slider_navigation">
+				<?php if($slidecount != 1): ?><span class="move_left" data-slide-nr="-1"><?= $this->text["prev"] ?></span><?php endif; ?>
+					<?php if($this->showlist): ?>
+						<ul class="move_to">
+						<?php foreach ($this->items[$category->alias] as $key => $page): ?>
+							<li data-slide-nr="<?= $key; ?>"><?= $key+1; ?></li>
+						<?php endforeach; ?>
+						</ul>
+					<?php else: ?>
+						<?php $slidecount = count($this->items[$category->alias]); ?>
+						<span class="status"><?= $this->text["page"] ?> <span class="current">1</span> <?= $this->text["of"] ?> <span class="max"><?= $slidecount ?></span></span>
+					<?php endif; ?>
+				<?php if($slidecount != 1): ?><span class="move_right" data-slide-nr="1"><?= $this->text["next"] ?></span><?php endif; ?>
+			</div>
+		</div>
+		<?php else: ?>
+			<p><?= $this->text["empty"] ?></p>
+		<?php endif; ?>
+		</div>
+	<?php endforeach; ?>
+	</div>
+</div>
